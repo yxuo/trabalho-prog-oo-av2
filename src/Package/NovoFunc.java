@@ -15,8 +15,8 @@ public class NovoFunc {
             statement.executeUpdate(sql);
             
             // insert into table
-            sql = "INSERT INTO " + tableName + " (nome, cargo, end) " +
-            "VALUES ('" + func.getNome() + "', '" + func.getCargo() + "', '" + func.getEnd() + "')";
+            sql = "INSERT INTO " + tableName + " (codigo, nome, cargo, end) " +
+            "VALUES ('" + func.getCodigo() + "', '" + func.getNome() + "', '" + func.getCargo() + "', '" + func.getEnd() + "')";
             statement.executeUpdate(sql);
 
             // Response
