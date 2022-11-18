@@ -3,8 +3,55 @@ import Package.*;
 import java.util.*;
 
 public class App {
+
+    // function with default parameter
+    public static int readInt(String prompt) {
+        Scanner sc = new Scanner(System.in);
+        // read string
+        do {
+            try {
+                return sc.nextInt();
+            } catch (InputMismatchException e) {
+                sc.nextLine();
+                if (prompt != null && !prompt.isEmpty())
+                    System.out.println(prompt);
+                else
+                    System.out.println("Entrada inválida, tente novamente!");
+            }
+        } while (true);
+
+    }
+
+    public static int readInt() {
+        return readInt("");
+    }
+
+    public static String readString(String prompt) {
+        Scanner sc = new Scanner(System.in);
+        // read string
+        String s = "";
+        boolean ok = false;
+        do {
+            try {
+                s = sc.next();
+                ok = true;
+            } catch (InputMismatchException e) {
+                if (prompt != null && !prompt.isEmpty())
+                    System.out.println(prompt);
+                else
+                    System.out.println("Entrada inválida, tente novamente!");
+            }
+        } while (!ok);
+
+        return s;
+    }
+    public static String readString(){
+        return readString("");
+    }
+
+
     public static void main(String[] args) throws Exception {
-        System.out.println("Hello, World!");
+        System.out.println("App MYSQL Connector");
         String dbName = "lasalle";
 
         FabricaConexao fabricaConexao = new FabricaConexao();
@@ -19,21 +66,19 @@ public class App {
 
         // loop
         while (true) {
-            Scanner sc = new Scanner(System.in);
-            int opcao = sc.nextInt();
+            int opcao = readInt();
             switch (opcao) {
                 case 1:
                     // Read
                     System.out.println("Inserir");
                     System.out.println("Digite o codigo:");
-                    int codigo = sc.nextInt();
-                    sc.nextLine();
+                    int codigo = readInt();
                     System.out.println("Digite o nome:");
-                    String nome = sc.next();
+                    String nome = readString();
                     System.out.println("Digite o cargo:");
-                    String cargo = sc.next();
+                    String cargo = readString();
                     System.out.println("Digite o endereço:");
-                    String end = sc.next();
+                    String end = readString();
                     // Create
                     Func func = new Func(codigo, nome, cargo, end);
                     Exception response = NovoFunc.run(fabricaConexao, dbName, func);
@@ -44,39 +89,38 @@ public class App {
                         System.out.println("Erro ao inserir: " + response);
                     }
                     break;
-                    case 2:
+                case 2:
                     System.out.println("Consultar");
                     System.out.println("Digite o código:");
-                    codigo = sc.nextInt();
-                    sc.nextLine();
+                    codigo = readInt();
                     func = ConsultarFunc.run(fabricaConexao, dbName, codigo);
                     // Print
                     if (func != null)
-                    System.out.println(func.toString());
+                        System.out.println(func.toString());
                     else
-                    System.out.println("Funcionário não encontrado!");
+                        System.out.println("Funcionário não encontrado!");
                     break;
-                    case 3:
+                case 3:
                     System.out.println("Excluir");
                     System.out.println("Digite o código:");
-                    codigo = sc.nextInt();
+                    codigo = readInt();
                     response = ExcluirFunc.run(fabricaConexao, dbName, codigo);
                     // Response
                     if (response == null)
-                    System.out.println("Excluído com sucesso!");
+                        System.out.println("Excluído com sucesso!");
                     else
-                    System.out.println("Erro ao excluir: " + response);
+                        System.out.println("Erro ao excluir: " + response);
                     break;
-                    case 4:
+                case 4:
+                    System.in.close();
                     System.out.println("Sair");
-                    sc.close();
                     System.exit(0);
                     break;
-                    default:
+                default:
                     System.out.println("Opção inválida");
                     break;
-                }
-                System.out.println(menu);
             }
+            System.out.println(menu);
+        }
     }
 }
